@@ -3,17 +3,14 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 /**
- * Hero – Black Peak
- * Päivitetty versio:
- * - Vuoren huippu nostettu ylemmäs
- * - Kuva levennetty ja zoomattu
- * - Ei päällekkäistä "BLACK PEAK" -tekstiä
- * - Timantti vilkkuu ja toimii painikkeena
+ * Hero – Black Peak (Vercel build fix)
+ * - useReducedMotion() -> boolean coercion (!!) to avoid boolean|null TS error
  */
 
 export default function Hero() {
+  // Vercel/SSR: coerce to boolean to avoid boolean|null
+  const reduce = !!useReducedMotion();
   const [open, setOpen] = useState(false);
-  const reduce = useReducedMotion();
 
   return (
     <motion.section
@@ -131,8 +128,8 @@ export default function Hero() {
               BLACK PEAK — käsintehdyt hopeakorut
             </h2>
             <p className="mb-4 text-sm">
-              Tässä voi olla yrityksen kuvaus, valmistusmenetelmät (esim.
-              punottu kuningasketju), materiaalit, toimitustiedot ja yhteys.
+              Tässä voi olla yrityksen kuvaus, valmistusmenetelmät (esim. punottu
+              kuningasketju), materiaalit, toimitustiedot ja yhteys.
             </p>
             <button
               onClick={() => setOpen(false)}
@@ -157,7 +154,9 @@ function FogLayer({
   opacity?: number;
   invert?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  // Coerce to boolean (avoid boolean|null)
+  const reduce = !!useReducedMotion();
+
   return (
     <motion.div
       aria-hidden="true"
@@ -199,7 +198,7 @@ function DiamondPulsing({
   reduce,
 }: {
   className?: string;
-  reduce: boolean;
+  reduce: boolean; // always boolean now
 }) {
   return (
     <motion.svg
